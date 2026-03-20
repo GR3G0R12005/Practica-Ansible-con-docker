@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+  control:
+    build:
+      context: .
+      dockerfile: Dockerfile.control
+    container_name: control
+    volumes:
+      - ./inventory.ini:/ansible/inventory.ini
+      - ./playbook.yml:/ansible/playbook.yml
+      - ./site:/ansible/site
+    depends_on:
+      - node1
+      - node2
+    tty: true
+    stdin_open: true
+  node1:
+    build: .
+    container_name: node1
+    ports:
+      - "2222:22"
+  node2:
+    build: .
+    container_name: node2
+    ports:
+      - "2223:22"
